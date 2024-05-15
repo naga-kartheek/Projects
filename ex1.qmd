@@ -1,0 +1,101 @@
+---
+title: "US College data"
+subtitle: "A Comprehensive Overview of Various Metrics"
+author: "; Naga Kartheek Peddisetty"
+format: dashboard
+
+theme:
+  - cosmo
+  - custom.scss
+  - quarto.scss
+
+execute: 
+  echo: false
+---
+
+```{r setup, include=FALSE}
+
+# Load necessary libraries
+library(ISLR2)
+library(tidyverse)
+```
+
+```{r}
+# Load the College dataset
+data(College)
+```
+
+## Row 
+
+::: {.valuebox icon="star" color="blue"}
+Private Universities
+
+`r sum(College$Private=="Yes")`
+:::
+
+::: {.valuebox icon="plus-circle" color="green"}
+Public Universities
+
+`r sum(College$Private=="No")`
+:::
+
+::: {.valuebox icon="star" color="purple"}
+New students from top 10% of H.S class
+
+`r format(sum(College$Top10perc), big.mark = ",")`
+:::
+
+::: {.valuebox icon="plus-circle" color="orange"}
+New students from top 25% of H.S class
+
+`r format(sum(College$Top25perc), big.mark = ",")`
+:::
+
+
+## Row
+### Column {.tabset width="50%"}
+```{r}
+#| title: Scatter plot
+# Create a scatter plot for Graduation Rate vs. Out-of-State Tuition
+ggplot(College, aes(x = Outstate, y = Grad.Rate, color = Private)) +
+  geom_point() +
+  facet_wrap(~Private, ncol = 2) +
+  labs(x = "Out-of-State Tuition", y = "Graduation Rate", color = "Private University") +
+  ggtitle("Graduation Rate vs. Out-of-State Tuition")
+```
+
+```{r}
+# Create a box plot for Graduation Rate (Grad.Rate) by Private/Public universities
+ggplot(College, aes(x = Private, y = Grad.Rate, fill = Private)) +
+  geom_boxplot() +
+  labs(title = "Box Plot of Graduation Rate by University Type",
+       x = "University Type",
+       y = "Graduation Rate",
+       fill = "University Type") +
+  theme_minimal()
+```
+
+### Column {.tabset width="50%"}
+```{r}
+# Create a histogram for Graduation Rate (Grad.Rate)
+ggplot(College, aes(x = Grad.Rate)) +
+  geom_histogram(binwidth = 5, fill = "salmon", color = "black") +
+  labs(title = "Histogram of Graduation Rate",
+       x = "Graduation Rate",
+       y = "Frequency") +
+  theme_minimal()
+```
+
+```{r}
+# Line plot with smoother for Percent Faculty with Terminal Degree vs. Percent Faculty with PhD
+ggplot(College, aes(x = Terminal, y = PhD, color = Private)) +
+  geom_point(alpha = 0.4) +
+  geom_smooth(method = "lm", se = FALSE) +
+  facet_wrap(~ Private, ncol = 2) +
+  labs(title = "PhD vs. Terminal Degree Percentage",
+       x = "Percent Faculty with Terminal Degree",
+       y = "Percent Faculty with PhD",
+       color = "Private University") +
+  theme_minimal()
+```
+
