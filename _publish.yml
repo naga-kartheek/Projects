@@ -1,0 +1,6 @@
+- source: ex1.qmd
+  quarto-pub:
+    - id: db98d493-247c-4a82-b73a-2d02333e3dc0
+      url: 'https://kartheek.quarto.pub/us-college-data'
+    - id: 1f5a2b46-d80d-4dea-942d-47d95f648bf0
+      url: 'https://kartheek.quarto.pub/us-college-data'

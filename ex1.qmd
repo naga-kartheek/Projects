@@ -23,72 +23,77 @@ library(tidyverse)
 ```{r}
 # Load the College dataset
 data(College)
+college <- College
+college$Grad.Rate[college$Grad.Rate > 100] <- 100
 ```
 
+# Statistics
 ## Row 
 
-::: {.valuebox icon="star" color="blue"}
+::: {.valuebox icon="star" color="vb-info"}
 Private Universities
 
 `r sum(College$Private=="Yes")`
 :::
 
-::: {.valuebox icon="plus-circle" color="green"}
+::: {.valuebox icon="plus-circle" color="vb-warning"}
 Public Universities
 
 `r sum(College$Private=="No")`
 :::
 
-::: {.valuebox icon="star" color="purple"}
+::: {.valuebox icon="star" color="vb-danger"}
 New students from top 10% of H.S class
 
 `r format(sum(College$Top10perc), big.mark = ",")`
 :::
 
-::: {.valuebox icon="plus-circle" color="orange"}
-New students from top 25% of H.S class
+::: {.valuebox icon="plus-circle" color="vb-success"}
+Overall Grad.Rate
 
-`r format(sum(College$Top25perc), big.mark = ",")`
+`r round(mean(College$Grad.Rate),2)`
 :::
 
 
 ## Row
 ### Column {.tabset width="50%"}
 ```{r}
-#| title: Scatter plot
-# Create a scatter plot for Graduation Rate vs. Out-of-State Tuition
-ggplot(College, aes(x = Outstate, y = Grad.Rate, color = Private)) +
-  geom_point() +
-  facet_wrap(~Private, ncol = 2) +
-  labs(x = "Out-of-State Tuition", y = "Graduation Rate", color = "Private University") +
-  ggtitle("Graduation Rate vs. Out-of-State Tuition")
-```
-
-```{r}
+#| title: Box plot
 # Create a box plot for Graduation Rate (Grad.Rate) by Private/Public universities
-ggplot(College, aes(x = Private, y = Grad.Rate, fill = Private)) +
+ggplot(college, aes(x = Private, y = Grad.Rate, fill = Private)) +
   geom_boxplot() +
   labs(title = "Box Plot of Graduation Rate by University Type",
        x = "University Type",
-       y = "Graduation Rate",
+       y = "Graduation Rate (%)",
        fill = "University Type") +
   theme_minimal()
 ```
 
+```{r}
+#| title: Scatter plot Analysis
+# Create a scatter plot for Graduation Rate vs. Out-of-State Tuition
+ggplot(college, aes(x = Outstate, y = Grad.Rate, color = Private)) +
+  geom_point() +
+  facet_wrap(~Private, ncol = 2) +
+  labs(x = "Out-of-State Tuition ($)", y = "Graduation Rate(%)", color = "Private University") +
+  ggtitle("Graduation Rate vs. Out-of-State Tuition")
+```
+
 ### Column {.tabset width="50%"}
 ```{r}
-# Create a histogram for Graduation Rate (Grad.Rate)
-ggplot(College, aes(x = Grad.Rate)) +
+#| title: Histogram of Grad.Rate
+ggplot(college, aes(x = Grad.Rate)) +
   geom_histogram(binwidth = 5, fill = "salmon", color = "black") +
   labs(title = "Histogram of Graduation Rate",
-       x = "Graduation Rate",
-       y = "Frequency") +
+       x = "Graduation Rate (%)",
+       y = "No. of Universities") +
   theme_minimal()
 ```
 
 ```{r}
+#| title: Line Plot
 # Line plot with smoother for Percent Faculty with Terminal Degree vs. Percent Faculty with PhD
-ggplot(College, aes(x = Terminal, y = PhD, color = Private)) +
+ggplot(college, aes(x = Terminal, y = PhD, color = Private)) +
   geom_point(alpha = 0.4) +
   geom_smooth(method = "lm", se = FALSE) +
   facet_wrap(~ Private, ncol = 2) +
@@ -99,3 +104,39 @@ ggplot(College, aes(x = Terminal, y = PhD, color = Private)) +
   theme_minimal()
 ```
 
+# About Dataset
+
+::: card
+::: card-header
+What is the data about ??
+:::
+::: card-body
+US College data set based on US news and World report.
+
+**Dimensions of the data set:**
+
+• This data set consists of 777 observations and 18 variables. Primarily used to demonstrate statistical and machine learning methods.
+
+**Important Attributes description:**
+
+> Private: Categorical variable indicating whether the college is private ("Yes") or public ("No").
+>
+> Apps: Number of applications received (integer).
+>
+> Accept: Number of applicants accepted (integer).
+>
+> Enroll: Number of new students enrolled (integer).
+>
+> Outstate: Out-of-state tuition fees (USD).
+>
+> F.Undergrad: The number of full-time undergraduates (integer).
+>
+> P.Undergrad: The number of part-time undergraduates (integer). 
+>
+> Room.Board: Room and board costs (USD).
+>
+> Books: Estimated book costs (USD).
+>
+> Grad.Rate: Graduation rate (percentage).
+:::
+:::
