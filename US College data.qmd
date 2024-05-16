@@ -24,6 +24,8 @@ library(tidyverse)
 # Load the College dataset
 data(College)
 college <- College
+college <- college %>%
+  mutate(Private = ifelse(Private == "No", "Public", "Private"))
 college$Grad.Rate[college$Grad.Rate > 100] <- 100
 ```
 

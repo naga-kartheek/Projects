@@ -4,3 +4,7 @@
       url: 'https://kartheek.quarto.pub/us-college-data'
     - id: 1f5a2b46-d80d-4dea-942d-47d95f648bf0
       url: 'https://kartheek.quarto.pub/us-college-data'
+- source: US College data.qmd
+  quarto-pub:
+    - id: 419a2f1b-1da2-4002-87b5-04b1724fc8e1
+      url: 'https://kartheek.quarto.pub/us-college-data'
